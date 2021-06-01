@@ -536,7 +536,7 @@ MeshCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1167766285}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c748ab454bd76fa4295bcc80669845b7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -727,8 +727,9 @@ GameObject:
   - component: {fileID: 1815358172}
   - component: {fileID: 1815358171}
   - component: {fileID: 1815358170}
-  - component: {fileID: 1815358174}
   - component: {fileID: 1815358175}
+  - component: {fileID: 1815358176}
+  - component: {fileID: 1815358174}
   m_Layer: 8
   m_Name: Ball
   m_TagString: Untagged
@@ -808,8 +809,7 @@ Transform:
 --- !u!54 &1815358174
 Rigidbody:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 54249714397798862, guid: 03da2a7b5e0d4254da481f5490b8c43c,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1815358169}
   serializedVersion: 2
@@ -839,7 +839,24 @@ MonoBehaviour:
     m_Bits: 4294967039
   useForce: 0
   useVelocity: 0
-  collisionLayers: 0
+  speed: 1
+--- !u!143 &1815358176
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1815358169}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Height: 1
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1960724491
 GameObject:
   m_ObjectHideFlags: 0

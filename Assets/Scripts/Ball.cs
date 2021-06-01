@@ -8,10 +8,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private Transform groundCheckTransform = null;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private bool useForce, useVelocity;
-    [SerializeField] private int collisionLayers;
+    [SerializeField] private float speed = 250;
     private float xInput, zInput;
     Rigidbody ballComponent;
-    private bool isGrounded, spacePressed;
+    private bool isGrounded, spacePressed, shiftPressed;
  
 
     // Use this for initialization
@@ -34,6 +34,16 @@ public class Ball : MonoBehaviour
         {
             spacePressed = true;
         }
+
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            shiftPressed = true;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            shiftPressed = false;
+        }
     }
 
     // FixedUpdate is called once every physics update (100x a s)
@@ -44,15 +54,23 @@ public class Ball : MonoBehaviour
         if (useVelocity)
         {
             // Here we're applying the horizontal input we checked in the Update method.
-            ballComponent.velocity = new Vector3(xInput, ballComponent.velocity.y, zInput);
+            ballComponent.velocity = new Vector3(xInput, ballComponent.velocity.y, zInput) * speed;
         }
 
         if(useForce)
         {
-            ballComponent.AddForce(new Vector3(xInput, 0, zInput));
+            ballComponent.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
+
+            
+
         }
 
-        if(Physics.OverlapSphere(groundCheckTransform.position, 1f, playerMask).Length != 0)
+        if(shiftPressed)
+        {
+            ballComponent.AddForce(new Vector3(0 - ballComponent.velocity.x, 0, 0 - ballComponent.velocity.z) * speed * Time.deltaTime);
+        }
+
+       /* if(Physics.OverlapSphere(groundCheckTransform.position, 1f, playerMask).Length != 0)
             Debug.Log("we're colliding");
 
         // What this is doing is checking for how many things are colliding with the transform
@@ -68,7 +86,7 @@ public class Ball : MonoBehaviour
         {
             ballComponent.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
             spacePressed = false;
-        }
+        }*/
 
         //Test Changes
 
