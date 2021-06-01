@@ -60,9 +60,6 @@ public class Ball : MonoBehaviour
         if(useForce)
         {
             ballComponent.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
-
-            
-
         }
 
         if(shiftPressed)
@@ -90,6 +87,8 @@ public class Ball : MonoBehaviour
 
         //Test Changes
 
+
+        // even more test changes woah
 
     }
 
