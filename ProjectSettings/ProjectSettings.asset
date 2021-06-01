@@ -582,11 +582,13 @@ PlayerSettings:
     daydream:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Collab: 1
+    UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: d680a592-f7e0-4a14-b52a-5698004e0b94
+  projectName: Astroball
+  organizationId: zamorikan
   cloudEnabled: 0
   enableNewInputSystem: 0
