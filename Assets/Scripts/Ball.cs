@@ -53,7 +53,10 @@ public class Ball : MonoBehaviour
     void FixedUpdate()
     {
 
-
+        if(transform.position.y <= -110)
+        {
+            ResetPlayer();
+        }
 
         if (useVelocity)
         {
@@ -63,7 +66,15 @@ public class Ball : MonoBehaviour
 
         if (useForce)
         {
-            ballRigidbody.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
+            if(IsGrounded())
+            {
+                ballRigidbody.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
+            }
+            else
+            {
+                ballRigidbody.AddForce(new Vector3(xInput, 0, zInput) * speed/2 * Time.deltaTime);
+            }
+            
         }
 
         if (shiftPressed)
@@ -104,6 +115,11 @@ public class Ball : MonoBehaviour
         }
     }
 
+    private void ResetPlayer()
+    {
+        transform.position = new Vector3(0,1,0);
+        ballRigidbody.velocity = new Vector3(0, 0, 0);
+    }
 
     private bool IsGrounded()
     {

@@ -21,7 +21,9 @@ public class CameraController : MonoBehaviour
     // and thats not where you do camera stuff!
     void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
+        if (player.transform.position.y >= -15) {
+            transform.position = player.transform.position + offset;
+        }
 
         if (enableCameraSway)
         {
