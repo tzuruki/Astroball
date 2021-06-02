@@ -906,6 +906,7 @@ GameObject:
   - component: {fileID: 1173186067}
   - component: {fileID: 1173186069}
   - component: {fileID: 1173186068}
+  - component: {fileID: 1173186070}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -963,13 +964,25 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Collectables collected: '
+  m_Text: 
 --- !u!222 &1173186069
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1173186066}
+--- !u!114 &1173186070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1173186066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77ae2efa0cd08b04cbcc75c0292b0f51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: 
 --- !u!1001 &1361102646
 Prefab:
   m_ObjectHideFlags: 0

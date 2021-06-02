@@ -12,7 +12,7 @@ public class Ball : MonoBehaviour
     private float lowJumpMultiplier = 2f;
     private float xInput, zInput, distToGround;
     Rigidbody ballRigidbody;
-    private bool isGrounded, spacePressed, shiftPressed;
+    private bool spacePressed, shiftPressed;
 
 
     // Use this for initialization
@@ -112,6 +112,7 @@ public class Ball : MonoBehaviour
         {
             // kill it kill it dead
             Destroy(other.gameObject);
+            PlayerStats.Points += 1;
         }
     }
 
