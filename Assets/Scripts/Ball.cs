@@ -64,7 +64,7 @@ public class Ball : MonoBehaviour
 
         if(shiftPressed)
         {
-            ballComponent.AddForce(new Vector3(0 - ballComponent.velocity.x, 0, 0 - ballComponent.velocity.z) * speed * Time.deltaTime);
+            ballComponent.AddForce(new Vector3(0 - ballComponent.velocity.x * 2, 0, 0 - ballComponent.velocity.z * 2) * speed * Time.deltaTime);
         }
 
        /* if(Physics.OverlapSphere(groundCheckTransform.position, 1f, playerMask).Length != 0)
