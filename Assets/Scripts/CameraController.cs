@@ -5,7 +5,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] GameObject player;
+    private float xInput, zInput;
     Vector3 offset;
+    private float startingXRotation = 23f;
+    [SerializeField] bool enableCameraSway = true;
 
     // Use this for initialization
     void Start()
@@ -13,9 +16,19 @@ public class CameraController : MonoBehaviour
         offset = transform.position;
     }
 
-    // Update is called once per frame
+    // LateUpdate is called AFTER the Update() method - apparently important for cameras as things can happen in update
+    // and thats not where you do camera stuff!
     void LateUpdate()
     {
         transform.position = player.transform.position + offset;
+
+        if (enableCameraSway)
+        {
+            zInput = Input.GetAxis("Horizontal");
+            xInput = Input.GetAxis("Vertical");
+            // This'll apply a small rotation to the x/z angles on the camera so it looks like the world is tilting a la monkey ball.
+            transform.localRotation = Quaternion.Euler((startingXRotation + (xInput * 2)), 0, (zInput * 2));
+        }
+
     }
 }
