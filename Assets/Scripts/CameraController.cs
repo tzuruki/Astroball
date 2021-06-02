@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     private float xInput, zInput;
     Vector3 offset;
     private float startingXRotation = 23f;
+    private float cameraSwayValue = 1f;
     [SerializeField] bool enableCameraSway = true;
 
     // Use this for initialization
@@ -27,7 +28,7 @@ public class CameraController : MonoBehaviour
             zInput = Input.GetAxis("Horizontal");
             xInput = Input.GetAxis("Vertical");
             // This'll apply a small rotation to the x/z angles on the camera so it looks like the world is tilting a la monkey ball.
-            transform.localRotation = Quaternion.Euler((startingXRotation + (xInput * 2)), 0, (zInput * 2));
+            transform.localRotation = Quaternion.Euler((startingXRotation + (xInput * cameraSwayValue)), 0, (zInput * cameraSwayValue));
         }
 
     }

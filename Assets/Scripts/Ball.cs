@@ -5,20 +5,22 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     // SerializeField will expose the field to the inspector without changing its visibility.
-    [SerializeField] private Transform groundCheckTransform = null;
     [SerializeField] private LayerMask playerMask;
     [SerializeField] private bool useForce, useVelocity;
     [SerializeField] private float speed = 250;
-    private float xInput, zInput;
-    Rigidbody ballComponent;
+    private float fallMultiplier = 2.5f;
+    private float lowJumpMultiplier = 2f;
+    private float xInput, zInput, distToGround;
+    Rigidbody ballRigidbody;
     private bool isGrounded, spacePressed, shiftPressed;
- 
+
 
     // Use this for initialization
     void Start()
     {
-        ballComponent = GetComponent<Rigidbody>();
+        ballRigidbody = GetComponent<Rigidbody>();
         useForce = true;
+        distToGround = GetComponent<Collider>().bounds.extents.y;
     }
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class Ball : MonoBehaviour
             spacePressed = true;
         }
 
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             shiftPressed = true;
         }
@@ -51,48 +53,42 @@ public class Ball : MonoBehaviour
     void FixedUpdate()
     {
 
+
+
         if (useVelocity)
         {
             // Here we're applying the horizontal input we checked in the Update method.
-            ballComponent.velocity = new Vector3(xInput, ballComponent.velocity.y, zInput) * speed;
+            ballRigidbody.velocity = new Vector3(xInput, ballRigidbody.velocity.y, zInput) * speed;
         }
 
-        if(useForce)
+        if (useForce)
         {
-            ballComponent.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
+            ballRigidbody.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
         }
 
-        if(shiftPressed)
+        if (shiftPressed)
         {
-            ballComponent.AddForce(new Vector3(0 - ballComponent.velocity.x * 2, 0, 0 - ballComponent.velocity.z * 2) * speed * Time.deltaTime);
-        }
-
-       /* if(Physics.OverlapSphere(groundCheckTransform.position, 1f, playerMask).Length != 0)
-            Debug.Log("we're colliding");
-
-        // What this is doing is checking for how many things are colliding with the transform
-        // that we've created above, in a sphere of 0.1f units. Thats the thing we stuck on the
-        // arse of the ball!
-        if (Physics.OverlapSphere(groundCheckTransform.position, 1f, playerMask).Length == 0)
-        {
-            return;
+            ballRigidbody.AddForce(new Vector3(0 - ballRigidbody.velocity.x * 2, 0, 0 - ballRigidbody.velocity.z * 2) * speed * Time.deltaTime);
         }
 
         // jump when the spcae button is pressed
-        if(spacePressed)
+        if (spacePressed && IsGrounded())
         {
-            ballComponent.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+            ballRigidbody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
             spacePressed = false;
-        }*/
+        }
 
-        //Test Changes
-
-
-        // even more test changes woah
-
+        if (ballRigidbody.velocity.y < 0)
+        {
+            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (ballRigidbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        {
+            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
     }
 
-    
+
 
     // Here this method will enter when our object enters a trigger
     // We defined a trigger in our coin object, so that'll populate the "other"
@@ -101,11 +97,16 @@ public class Ball : MonoBehaviour
     {
         // We then want to check what layer we've assigned our object (after accessing)
         // so that we can verify its one we wanted to use right?
-        if(other.gameObject.layer == 9)
+        if (other.gameObject.layer == 9)
         {
             // kill it kill it dead
             Destroy(other.gameObject);
         }
     }
 
+
+    private bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+    }
 }
