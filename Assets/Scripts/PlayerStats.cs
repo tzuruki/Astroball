@@ -1,4 +1,5 @@
-﻿public static class PlayerStats
+﻿// This is a bit of a weird hack to keep track of stuff between scenes. not sure if its good yet or not but it seems to work!
+public static class PlayerStats
 {
     private static int kills, deaths, assists, points;
 

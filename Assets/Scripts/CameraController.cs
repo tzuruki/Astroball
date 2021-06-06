@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     private float xInput, zInput;
     Vector3 offset;
     private float startingXRotation = 23f;
-    private float cameraSwayValue = 1f;
+    [SerializeField] private float cameraSwayValue = 1f;
     [SerializeField] bool enableCameraSway = true;
 
     // Use this for initialization
@@ -21,10 +21,13 @@ public class CameraController : MonoBehaviour
     // and thats not where you do camera stuff!
     void LateUpdate()
     {
+        // This is what handles the player dropping out of camera view
+        // i.e. if we fall past a certain y coord then stop moving
         if (player.transform.position.y >= -15) {
             transform.position = player.transform.position + offset;
         }
 
+        // toggleable camera sway - higher values make you feel motion sick its not nice.
         if (enableCameraSway)
         {
             zInput = Input.GetAxis("Horizontal");
