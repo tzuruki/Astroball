@@ -10,11 +10,19 @@ public class CameraController : MonoBehaviour
     private float startingXRotation = 23f;
     [SerializeField] private float cameraSwayValue = 1f;
     [SerializeField] bool enableCameraSway = true;
+    [SerializeField] private float sensitivity = 1f;
+    float rotateHorizontal, rotateVertical;
 
     // Use this for initialization
     void Start()
     {
         offset = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        rotateHorizontal = Input.GetAxis("Mouse X");
+        rotateVertical = Input.GetAxis("Mouse Y");
     }
 
     // LateUpdate is called AFTER the Update() method - apparently important for cameras as things can happen in update
@@ -33,8 +41,11 @@ public class CameraController : MonoBehaviour
             zInput = Input.GetAxis("Horizontal");
             xInput = Input.GetAxis("Vertical");
             // This'll apply a small rotation to the x/z angles on the camera so it looks like the world is tilting a la monkey ball.
-            transform.localRotation = Quaternion.Euler((startingXRotation + (xInput * cameraSwayValue)), 0, (zInput * cameraSwayValue));
+            //transform.localRotation = Quaternion.Euler((startingXRotation + (xInput * cameraSwayValue)), 0, (zInput * cameraSwayValue));
         }
+
+        transform.RotateAround(player.transform.position, -Vector3.up, rotateHorizontal * sensitivity);
+        transform.RotateAround(Vector3.zero, transform.right, rotateVertical * sensitivity);
 
     }
 }

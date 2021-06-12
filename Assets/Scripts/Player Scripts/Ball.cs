@@ -14,6 +14,12 @@ public class Ball : MonoBehaviour
     [SerializeField] private float brakeMultiplier = 2f;
     Rigidbody ballRigidbody;
     private bool spacePressed, shiftPressed;
+    
+    [SerializeField] float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+    Vector3 moveDirection;
+
+    public Transform thirdPersonCam;
 
 
     // Use this for initialization
@@ -27,10 +33,7 @@ public class Ball : MonoBehaviour
     // Note - here is where you get all your inputs, check em, etc.
     void Update()
     {
-        // Here we're reading the horizontal input from the InputManager
-        // The settings for this are defined in the Project Settings -> Input
-        xInput = Input.GetAxis("Horizontal");
-        zInput = Input.GetAxis("Vertical");
+        CalculatePlayerMovement();
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -58,41 +61,8 @@ public class Ball : MonoBehaviour
             ResetPlayer();
         }
 
-        // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
-        if (IsGrounded())
-        {
-            // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
-            ballRigidbody.AddForce(new Vector3(xInput, 0, zInput) * speed * Time.deltaTime);
-        }
-        else
-        {
-            // if we're not grounded we only want a little air control, not full air control
-            ballRigidbody.AddForce(new Vector3(xInput, 0, zInput) * speed / 2 * Time.deltaTime);
-        }
+        MovePlayer();
 
-        // breaking - apply the equal opposite force multiplied by the breakMultiplier to the ball
-        if (shiftPressed)
-        {
-            ballRigidbody.AddForce(new Vector3(0 - ballRigidbody.velocity.x * brakeMultiplier, 0, 0 - ballRigidbody.velocity.z * brakeMultiplier) * speed * Time.deltaTime);
-        }
-
-        // jump when the space button is pressed
-        if (spacePressed && IsGrounded())
-        {
-            ballRigidbody.AddForce(Vector3.up * upJumpForce, ForceMode.VelocityChange);
-            spacePressed = false;
-        }
-
-        // fancy complicated jump fall stuff. creates nicer feeling arcs on the way down. 
-        // also allows for holding down space to go a weeeee bit higher
-        if (ballRigidbody.velocity.y < 0)
-        {
-            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (ballRigidbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
-        {
-            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
     }
 
 
@@ -118,6 +88,61 @@ public class Ball : MonoBehaviour
     {
         transform.position = new Vector3(0, 1, 0);
         ballRigidbody.velocity = new Vector3(0, 0, 0);
+    }
+
+    private void CalculatePlayerMovement()
+    {
+        // Here we're reading the horizontal input from the InputManager
+        // The settings for this are defined in the Project Settings -> Input
+        xInput = Input.GetAxis("Horizontal");
+        zInput = Input.GetAxis("Vertical");
+
+        // this will be the direction we move in relative to the input
+        Vector3 direction = new Vector3(xInput, 0f, zInput);
+
+        // We then transform this based on the current direction of the 
+        // camera, so we move in that direction!
+        moveDirection = thirdPersonCam.TransformDirection(direction);
+    }
+
+    // Within here, apply any movement to the player that has been calculated.
+    private void MovePlayer()
+    {
+        // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
+        if (IsGrounded())
+        {
+            // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
+            ballRigidbody.AddForce(moveDirection * speed * Time.deltaTime);
+        }
+        else
+        {
+            // if we're not grounded we only want a little air control, not full air control
+            ballRigidbody.AddForce(moveDirection * speed / 2 * Time.deltaTime);
+        }
+
+        // breaking - apply the equal opposite force multiplied by the breakMultiplier to the ball
+        if (shiftPressed)
+        {
+            ballRigidbody.AddForce(new Vector3(0 - ballRigidbody.velocity.x * brakeMultiplier, 0, 0 - ballRigidbody.velocity.z * brakeMultiplier) * speed * Time.deltaTime);
+        }
+
+        // jump when the space button is pressed
+        if (spacePressed && IsGrounded())
+        {
+            ballRigidbody.AddForce(Vector3.up * upJumpForce, ForceMode.VelocityChange);
+            spacePressed = false;
+        }
+
+        // fancy complicated jump fall stuff. creates nicer feeling arcs on the way down. 
+        // also allows for holding down space to go a weeeee bit higher
+        if (ballRigidbody.velocity.y < 0)
+        {
+            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (ballRigidbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        {
+            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
     }
 
     // a really neat raycast downwards that allows for very quick checks
