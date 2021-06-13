@@ -111,6 +111,7 @@ public class Ball : MonoBehaviour
         // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
         if (IsGrounded())
         {
+            ballRigidbody.velocity = Vector3.ClampMagnitude(ballRigidbody.velocity, speed * Time.fixedDeltaTime);
             // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
             ballRigidbody.AddForce(moveDirection * speed * Time.deltaTime);
         }
@@ -121,7 +122,7 @@ public class Ball : MonoBehaviour
         }
 
         // breaking - apply the equal opposite force multiplied by the breakMultiplier to the ball
-        if (shiftPressed)
+        if (shiftPressed && IsGrounded())
         {
             ballRigidbody.AddForce(new Vector3(0 - ballRigidbody.velocity.x * brakeMultiplier, 0, 0 - ballRigidbody.velocity.z * brakeMultiplier) * speed * Time.deltaTime);
         }
@@ -130,6 +131,7 @@ public class Ball : MonoBehaviour
         if (spacePressed && IsGrounded())
         {
             ballRigidbody.AddForce(Vector3.up * upJumpForce, ForceMode.VelocityChange);
+            Debug.Log("jumped");
             spacePressed = false;
         }
 
@@ -143,6 +145,8 @@ public class Ball : MonoBehaviour
         {
             ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
+
+        //Debug.Log(ballRigidbody.velocity);
     }
 
     // a really neat raycast downwards that allows for very quick checks
