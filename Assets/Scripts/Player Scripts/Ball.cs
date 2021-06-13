@@ -12,11 +12,12 @@ public class Ball : MonoBehaviour
     private float xInput, zInput, distToGround;
     [SerializeField] private float upJumpForce = 5f;
     [SerializeField] private float brakeMultiplier = 2f;
+    [SerializeField] private float maxDrag = 2f;
+    [SerializeField] private float forceConstant = 400f;
     Rigidbody ballRigidbody;
     private bool spacePressed, shiftPressed;
     
-    [SerializeField] float turnSmoothTime = 0.1f;
-    float turnSmoothVelocity;
+    
     Vector3 moveDirection;
 
     public Transform thirdPersonCam;
@@ -27,6 +28,7 @@ public class Ball : MonoBehaviour
     {
         ballRigidbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<Collider>().bounds.extents.y;
+        ballRigidbody.maxAngularVelocity = 25f;
     }
 
     // Update is called once per frame
@@ -102,7 +104,7 @@ public class Ball : MonoBehaviour
 
         // We then transform this based on the current direction of the 
         // camera, so we move in that direction!
-        moveDirection = thirdPersonCam.TransformDirection(direction);
+        moveDirection = thirdPersonCam.TransformDirection(direction).normalized;
     }
 
     // Within here, apply any movement to the player that has been calculated.
@@ -111,9 +113,13 @@ public class Ball : MonoBehaviour
         // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
         if (IsGrounded())
         {
-            ballRigidbody.velocity = Vector3.ClampMagnitude(ballRigidbody.velocity, speed * Time.fixedDeltaTime);
-            // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
-            ballRigidbody.AddForce(moveDirection * speed * Time.deltaTime);
+            //This reduces drag when the player adds input, and makes it stop faster. 
+            ballRigidbody.drag = Mathf.Lerp(maxDrag, 0, moveDirection.magnitude);
+            // this reduces the amount of force that acts on the object if it is already 
+            // moving at speed. 
+            float forceMultiplier = Mathf.Clamp01((speed - ballRigidbody.velocity.magnitude) / speed);
+            // now we actually perform the push 
+            ballRigidbody.AddForce(moveDirection * (forceMultiplier * Time.deltaTime * forceConstant));
         }
         else
         {
@@ -131,7 +137,6 @@ public class Ball : MonoBehaviour
         if (spacePressed && IsGrounded())
         {
             ballRigidbody.AddForce(Vector3.up * upJumpForce, ForceMode.VelocityChange);
-            Debug.Log("jumped");
             spacePressed = false;
         }
 
@@ -146,7 +151,6 @@ public class Ball : MonoBehaviour
             ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
 
-        //Debug.Log(ballRigidbody.velocity);
     }
 
     // a really neat raycast downwards that allows for very quick checks

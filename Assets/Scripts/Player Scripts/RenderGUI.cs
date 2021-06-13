@@ -10,6 +10,7 @@ public class RenderGUI : MonoBehaviour
     void Awake()
     {
         textComponent = GetComponent<Text>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -21,20 +22,6 @@ public class RenderGUI : MonoBehaviour
         if (Input.GetKey(KeyCode.G))
         {
             Cursor.lockState = CursorLockMode.None;
-        }
-    }
-
-    private void OnGUI()
-    {
-        if (GUI.Button(new Rect(0, 120, 100, 50), "Lock Cursor"))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-
-        //Press this button to confine the Cursor within the screen
-        if (GUI.Button(new Rect(0, 240, 100, 50), "Confine Cursor"))
-        {
-            Cursor.lockState = CursorLockMode.Confined;
         }
     }
 }
