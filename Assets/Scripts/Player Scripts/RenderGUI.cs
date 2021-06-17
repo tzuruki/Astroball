@@ -6,6 +6,7 @@ public class RenderGUI : MonoBehaviour
 {
     public string scoreText;
     private Text textComponent;
+    private bool isLocked = true;
 
     void Awake()
     {
@@ -21,7 +22,22 @@ public class RenderGUI : MonoBehaviour
         // Press g to unlock the cursor
         if (Input.GetKey(KeyCode.G))
         {
-            Cursor.lockState = CursorLockMode.None;
+            if(isLocked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                isLocked = !isLocked;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                isLocked = !isLocked;
+            }
+
+        }
+
+        if(Input.GetKey(KeyCode.G) && isLocked)
+        {
+            
         }
     }
 }

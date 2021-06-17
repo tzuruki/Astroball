@@ -4733,7 +4733,7 @@ MonoBehaviour:
     shift = brake
 
     g
-    = unlock cursor
+    = lock/unlock cursor
 
     Esc = pause
 
