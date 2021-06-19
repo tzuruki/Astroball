@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerStats;
 
 public class Ball : MonoBehaviour
 {
@@ -17,11 +18,9 @@ public class Ball : MonoBehaviour
     Rigidbody ballRigidbody;
     private bool spacePressed, shiftPressed;
     
-    
     Vector3 moveDirection;
 
     public Transform thirdPersonCam;
-
 
     // Use this for initialization
     void Start()
@@ -76,11 +75,29 @@ public class Ball : MonoBehaviour
     {
         // We then want to check what layer we've assigned our object (after accessing)
         // so that we can verify its one we wanted to use right?
+
+        // Layer 9 is collectables for points
         if (other.gameObject.layer == 9)
         {
             // kill it kill it dead
             Destroy(other.gameObject);
             PlayerStats.Points += 1;
+        }
+
+        // Keys are on layer 8
+        if(other.gameObject.layer == 10)
+        {
+
+            KeyScript key = other.gameObject.GetComponent<KeyScript>();
+
+            DoorKey tempKey = new DoorKey();
+
+            tempKey.colour = key.GetColour();
+            tempKey.level = key.GetLevel();
+
+            PlayerStats.AddKey(tempKey);
+
+            Destroy(other.gameObject);
         }
     }
 

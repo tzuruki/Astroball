@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static PlayerStats;
+
 public class RenderGUI : MonoBehaviour
 {
     public string scoreText;
@@ -17,12 +19,19 @@ public class RenderGUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        textComponent.text = "Score: " + PlayerStats.Points;
+        string textBlock = "Score: " + PlayerStats.Points + "\n";
+        textBlock += "Keys: \n";
+        foreach (DoorKey key in PlayerStats.GetKeys())
+        {
+            textBlock += key.colour + " Key" + " \n";
+        }
+
+        textComponent.text = textBlock;
 
         // Press g to unlock the cursor
         if (Input.GetKey(KeyCode.G))
         {
-            if(isLocked)
+            if (isLocked)
             {
                 Cursor.lockState = CursorLockMode.None;
                 isLocked = !isLocked;
@@ -35,9 +44,9 @@ public class RenderGUI : MonoBehaviour
 
         }
 
-        if(Input.GetKey(KeyCode.G) && isLocked)
+        if (Input.GetKey(KeyCode.G) && isLocked)
         {
-            
+
         }
     }
 }

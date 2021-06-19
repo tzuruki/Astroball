@@ -15,8 +15,8 @@ TagManager:
   - Ground
   - Walls
   - Player
-  - Coin
-  - 
+  - Collectable
+  - Key
   - 
   - 
   - 
