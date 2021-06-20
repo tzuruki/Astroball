@@ -20,7 +20,9 @@ public class RenderGUI : MonoBehaviour
     void Update()
     {
         string textBlock = "Score: " + PlayerStats.Points + "\n";
+        textBlock += "Health: " + PlayerStats.Health + "\n";
         textBlock += "Keys: \n";
+
         foreach (DoorKey key in PlayerStats.GetKeys())
         {
             textBlock += key.colour + " Key" + " \n";
@@ -41,12 +43,6 @@ public class RenderGUI : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 isLocked = !isLocked;
             }
-
-        }
-
-        if (Input.GetKey(KeyCode.G) && isLocked)
-        {
-
         }
     }
 }

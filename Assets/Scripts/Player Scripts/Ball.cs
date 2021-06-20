@@ -28,6 +28,7 @@ public class Ball : MonoBehaviour
         ballRigidbody = GetComponent<Rigidbody>();
         distToGround = GetComponent<Collider>().bounds.extents.y;
         ballRigidbody.maxAngularVelocity = 25f;
+        PlayerStats.Health = 3;
     }
 
     // Update is called once per frame
@@ -84,7 +85,7 @@ public class Ball : MonoBehaviour
             PlayerStats.Points += 1;
         }
 
-        // Keys are on layer 8
+        // Keys are on layer 10
         if(other.gameObject.layer == 10)
         {
 
@@ -99,6 +100,8 @@ public class Ball : MonoBehaviour
 
             Destroy(other.gameObject);
         }
+
+
     }
 
     // Move the player back to a location pre-defined as the reset location
@@ -107,6 +110,7 @@ public class Ball : MonoBehaviour
     {
         transform.position = new Vector3(0, 1, 0);
         ballRigidbody.velocity = new Vector3(0, 0, 0);
+        PlayerStats.Health--;
     }
 
     private void CalculatePlayerMovement()

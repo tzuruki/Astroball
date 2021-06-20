@@ -7,6 +7,7 @@ public class Door : MonoBehaviour
     [SerializeField] private string colour;
     [SerializeField] private int level;
     [SerializeField] private GameObject keyColourText;
+    [SerializeField] private Collider doorCollider;
 
     bool playerPresent = false;
     TextMesh requiredText;
@@ -104,8 +105,6 @@ public class Door : MonoBehaviour
                 requiredText.text = colour + " key required";
                 playerHasKey = false;
             }
-
-
         }
     }
 

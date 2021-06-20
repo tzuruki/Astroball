@@ -10,7 +10,7 @@ public static class PlayerStats
         public int level { get; set; }
     }
 
-    private static int kills, deaths, assists, points;
+    private static int kills, deaths, assists, points, health;
     private static List<DoorKey> keyList;
 
     public static int Kills
@@ -58,6 +58,18 @@ public static class PlayerStats
         set
         {
             points = value;
+        }
+    }
+
+    public static int Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = value;
         }
     }
 
