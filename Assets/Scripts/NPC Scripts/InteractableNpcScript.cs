@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FranksScript : MonoBehaviour
+public class InteractableNpcScript : MonoBehaviour
 {
     // each of these objects is something to display depending on when we're close to the player,
     // talking to the player, and something to add or remove on the NPC object when talking
     [SerializeField] private GameObject talkToMeText;
     [SerializeField] private GameObject UiObjectToShow;
     [SerializeField] private GameObject gameObjectToShow;
+    [SerializeField] private GameObject canvas;
+    [SerializeField] private float yPosCanvas = 3f;
+    [SerializeField] private GameObject objToAttachTo;
+
     bool playerPresent, menuOpen;
-    GameObject playerObject;
+    RectTransform canvasRect, UiObjRt;
 
     void Start()
     {
@@ -18,8 +22,11 @@ public class FranksScript : MonoBehaviour
         talkToMeText.SetActive(false);
         UiObjectToShow.SetActive(false);
 
+        canvasRect = canvas.GetComponent<RectTransform>();
+        UiObjRt = UiObjectToShow.GetComponent<RectTransform>();
+
         // ObjectToShow is optional, doesn't have to be populated.
-        if(gameObjectToShow != null)
+        if (gameObjectToShow != null)
         {
             gameObjectToShow.SetActive(false);
         }
@@ -34,6 +41,10 @@ public class FranksScript : MonoBehaviour
             if (!menuOpen)
             {
                 talkToMeText.SetActive(true);
+            }
+            else
+            {
+                UpdateUiTextboxPos();
             }
             
             if (Input.GetKeyDown(KeyCode.E) && !menuOpen)
@@ -58,7 +69,6 @@ public class FranksScript : MonoBehaviour
         {
             // we're colliding with the player, set this to true
             playerPresent = true;
-            playerObject = collider.gameObject;
         }
     }
 
@@ -76,7 +86,6 @@ public class FranksScript : MonoBehaviour
             }
             UiObjectToShow.SetActive(false);
             menuOpen = false;
-            playerObject = null;
         }
     }
 
@@ -100,5 +109,27 @@ public class FranksScript : MonoBehaviour
             gameObjectToShow.SetActive(false);
         }
         menuOpen = false;
+    }
+
+    // wild bit of code that figures out where on the UI to display a textbox from an npc location in world
+    // shamelessly stolen from:
+    // https://forum.unity.com/threads/create-ui-health-markers-like-in-world-of-tanks.432935/
+    private void UpdateUiTextboxPos()
+    {
+        // Offset position above object box (in world space)
+        float offsetPosY = objToAttachTo.transform.position.y + yPosCanvas;
+
+        // Final position of marker in world space
+        Vector3 offsetPos = new Vector3(objToAttachTo.transform.position.x, offsetPosY, objToAttachTo.transform.position.z);
+
+        // Calculate *screen* position (note, not a canvas/recttransform position)
+        Vector2 canvasPos;
+        Vector2 screenPoint = Camera.main.WorldToScreenPoint(offsetPos);
+
+        // Convert screen position to Canvas / RectTransform space <- leave camera null if Screen Space Overlay
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out canvasPos);
+
+        // Set position of ui element we want to show
+        UiObjRt.localPosition = canvasPos;
     }
 }

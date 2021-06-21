@@ -6,21 +6,20 @@ using static PlayerStats;
 public class Ball : MonoBehaviour
 {
     // SerializeField will expose the field to the inspector without changing its visibility.
-    [SerializeField] private LayerMask playerMask;
     [SerializeField] private float speed = 250;
-    private float fallMultiplier = 2.5f;
-    private float lowJumpMultiplier = 2f;
+    [SerializeField] private float fallMultiplier = 2.5f;
+    [SerializeField] private float lowJumpMultiplier = 2f;
     private float xInput, zInput, distToGround;
     [SerializeField] private float upJumpForce = 5f;
     [SerializeField] private float brakeMultiplier = 2f;
     [SerializeField] private float maxDrag = 2f;
     [SerializeField] private float forceConstant = 400f;
-    Rigidbody ballRigidbody;
-    private bool spacePressed, shiftPressed;
-    
-    Vector3 moveDirection;
 
+    Rigidbody ballRigidbody;
+    bool spacePressed, shiftPressed;
+    Vector3 moveDirection;
     public Transform thirdPersonCam;
+    float dragVal;
 
     // Use this for initialization
     void Start()
@@ -35,7 +34,7 @@ public class Ball : MonoBehaviour
     // Note - here is where you get all your inputs, check em, etc.
     void Update()
     {
-        CalculatePlayerMovement();
+        
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -57,14 +56,16 @@ public class Ball : MonoBehaviour
     // Note - here is where you act upon any inputs you've read
     void FixedUpdate()
     {
+
         // "deathplane" is below y -110
         if (transform.position.y <= -110)
         {
             ResetPlayer();
         }
 
-        MovePlayer();
+        CalculatePlayerMovement();
 
+        MovePlayer();
     }
 
 
@@ -86,7 +87,7 @@ public class Ball : MonoBehaviour
         }
 
         // Keys are on layer 10
-        if(other.gameObject.layer == 10)
+        if (other.gameObject.layer == 10)
         {
 
             KeyScript key = other.gameObject.GetComponent<KeyScript>();
@@ -126,16 +127,46 @@ public class Ball : MonoBehaviour
         // We then transform this based on the current direction of the 
         // camera, so we move in that direction!
         moveDirection = thirdPersonCam.TransformDirection(direction).normalized;
+
     }
 
     // Within here, apply any movement to the player that has been calculated.
     private void MovePlayer()
     {
+        // basically mario jumping (small jump when small tap, big jump on long press)
+        // 
+        if (ballRigidbody.velocity.y < 0)
+        {
+            // The Physics.Gravity.y part is negative. hence how we're applying downward motion here.
+            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        }
+        else if (ballRigidbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
+        {
+            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+        }
+
         // if we're grounded apply a speed force in the direction we're pointing with the inputs checked (keyboard)
         if (IsGrounded())
         {
+            
+
+            // braking - apply the equal opposite force multiplied by the breakMultiplier to the ball
+            if (shiftPressed)
+            {
+                ballRigidbody.AddForce(new Vector3(0 - ballRigidbody.velocity.x * brakeMultiplier, 0, 0 - ballRigidbody.velocity.z * brakeMultiplier) * speed * Time.deltaTime);
+            }
+
+            // jump when the space button is pressed
+            if (spacePressed)
+            {
+                ballRigidbody.velocity = new Vector3(ballRigidbody.velocity.x, 0, ballRigidbody.velocity.z);
+                ballRigidbody.AddForce(Vector3.up * upJumpForce, ForceMode.Impulse);
+                spacePressed = false;
+            }
+
             //This reduces drag when the player adds input, and makes it stop faster. 
-            ballRigidbody.drag = Mathf.Lerp(maxDrag, 0, moveDirection.magnitude);
+            ballRigidbody.drag = Mathf.Lerp(maxDrag, 0, ballRigidbody.velocity.magnitude);
+
             // this reduces the amount of force that acts on the object if it is already 
             // moving at speed. 
             float forceMultiplier = Mathf.Clamp01((speed - ballRigidbody.velocity.magnitude) / speed);
@@ -148,29 +179,9 @@ public class Ball : MonoBehaviour
             ballRigidbody.AddForce(moveDirection * speed / 2 * Time.deltaTime);
         }
 
-        // breaking - apply the equal opposite force multiplied by the breakMultiplier to the ball
-        if (shiftPressed && IsGrounded())
-        {
-            ballRigidbody.AddForce(new Vector3(0 - ballRigidbody.velocity.x * brakeMultiplier, 0, 0 - ballRigidbody.velocity.z * brakeMultiplier) * speed * Time.deltaTime);
-        }
+        
 
-        // jump when the space button is pressed
-        if (spacePressed && IsGrounded())
-        {
-            ballRigidbody.AddForce(Vector3.up * upJumpForce, ForceMode.VelocityChange);
-            spacePressed = false;
-        }
 
-        // fancy complicated jump fall stuff. creates nicer feeling arcs on the way down. 
-        // also allows for holding down space to go a weeeee bit higher
-        if (ballRigidbody.velocity.y < 0)
-        {
-            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        }
-        else if (ballRigidbody.velocity.y > 0 && !Input.GetKey(KeyCode.Space))
-        {
-            ballRigidbody.velocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
 
     }
 
@@ -178,6 +189,6 @@ public class Ball : MonoBehaviour
     // of whether you're grounded or not
     private bool IsGrounded()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, distToGround + 0.1f);
+        return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.1f);
     }
 }

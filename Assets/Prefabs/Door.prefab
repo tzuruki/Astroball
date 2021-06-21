@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5720800117914032978}
   - component: {fileID: 5720800117914032979}
   - component: {fileID: 5720800117914032988}
-  - component: {fileID: 7595098522388040585}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -114,20 +113,7 @@ MonoBehaviour:
   colour: red
   level: 0
   keyColourText: {fileID: 6303943878492350301}
-  doorCollider: {fileID: 0}
---- !u!65 &7595098522388040585
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5720800117914032991}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2, y: 1.2, z: 3}
-  m_Center: {x: 0, y: 0, z: 0}
+  doorCollider: {fileID: 8250750687342833429}
 --- !u!1 &6303943878492350301
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,13 +219,14 @@ GameObject:
   m_Component:
   - component: {fileID: 7180633768588454816}
   - component: {fileID: 8250750687342833429}
+  - component: {fileID: 1400545684300015400}
   m_Layer: 0
   m_Name: DoorCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7180633768588454816
 Transform:
   m_ObjectHideFlags: 0
@@ -267,3 +254,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.2, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1400545684300015400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6988663978810096117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734ba88be5530e946a763abb76ffbe7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPresent: 0

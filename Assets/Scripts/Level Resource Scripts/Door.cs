@@ -9,14 +9,15 @@ public class Door : MonoBehaviour
     [SerializeField] private GameObject keyColourText;
     [SerializeField] private Collider doorCollider;
 
-    bool playerPresent = false;
     TextMesh requiredText;
     bool doorShouldMove = false;
     bool playerHasKey = false;
     Renderer doorColourRenderer;
+    PlayerPresentColliderScript playerPresentScript;
 
     private void Start()
     {
+        playerPresentScript = doorCollider.GetComponent<PlayerPresentColliderScript>();
         doorColourRenderer = gameObject.GetComponent<Renderer>();
 
         if (colour.Equals("red"))
@@ -45,8 +46,19 @@ public class Door : MonoBehaviour
     private void Update()
     {
         // Manage the showing of the various stuff here in update as its called more reliably.
-        if (playerPresent)
+        if (playerPresentScript.playerPresent)
         {
+            if (PlayerStats.hasKey(colour, level))
+            {
+                requiredText.text = "Use key? E to confirm";
+                playerHasKey = true;
+            }
+            else
+            {
+                requiredText.text = colour + " key required";
+                playerHasKey = false;
+            }
+
             if (!doorShouldMove)
             {
                 keyColourText.SetActive(true);
@@ -60,6 +72,11 @@ public class Door : MonoBehaviour
                     }
                 }
             }
+        }
+        else
+        {
+            playerHasKey = false;
+            keyColourText.SetActive(false);
         }
     }
 
@@ -84,39 +101,6 @@ public class Door : MonoBehaviour
                     Destroy(gameObject);
                 }
             }
-        }
-    }
-
-    private void OnTriggerStay(Collider collider)
-    {
-        // the collider has a tag, which for the player we have assigned to "Player"
-        if (collider.tag == "Player")
-        {
-            // we're colliding with the player, set this to true
-            playerPresent = true;
-
-            if (PlayerStats.hasKey(colour, level))
-            {
-                requiredText.text = "Use key? E to confirm";
-                playerHasKey = true;
-            }
-            else
-            {
-                requiredText.text = colour + " key required";
-                playerHasKey = false;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            // the player has left the bounding box of the object we're near,
-            // clean up everything
-            playerPresent = false;
-            playerHasKey = false;
-            keyColourText.SetActive(false);
         }
     }
 }
