@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseScreenScript : MonoBehaviour
 {
@@ -55,5 +56,10 @@ public class PauseScreenScript : MonoBehaviour
     {
         Debug.Log("Quitting");
         Application.Quit();
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("StartMenu");
     }
 }

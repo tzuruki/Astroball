@@ -109,14 +109,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd55bd3824577946913f4912dc10439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 4294967039
   speed: 350
-  upJumpForce: 5
+  fallMultiplier: 3
+  lowJumpMultiplier: 2
+  upJumpForce: 7
   brakeMultiplier: 2
-  maxDrag: 2
-  forceConstant: 400
+  maxDrag: 5
+  forceConstant: 700
+  debugTextField: {fileID: 0}
   thirdPersonCam: {fileID: 0}
 --- !u!54 &54478421631972448
 Rigidbody:
@@ -128,9 +128,9 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.5
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0

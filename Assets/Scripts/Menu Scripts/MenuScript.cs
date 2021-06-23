@@ -10,4 +10,9 @@ public class MenuScript : MonoBehaviour
         SceneManager.LoadScene("FirstLevelScene");
     }
 
+    public void StartLevel1()
+    {
+        SceneManager.LoadScene("Level1GreyBox");
+    }
+
 }
