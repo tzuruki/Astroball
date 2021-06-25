@@ -68,6 +68,7 @@ public class Door : MonoBehaviour
                     if (PlayerStats.RemoveKeyOfColourForLevel(colour, level))
                     {
                         doorShouldMove = true;
+                        Debug.Log("door should be told to move");
                         keyColourText.SetActive(false);
                     }
                 }
@@ -85,7 +86,7 @@ public class Door : MonoBehaviour
         // move the door upwards a bit cause it looks nice
         if (doorShouldMove)
         {
-            if (gameObject.transform.position.y < 5)
+            if (gameObject.transform.localPosition.y < 5)
             {
                 gameObject.transform.position += Vector3.up * 1f * Time.deltaTime;
 

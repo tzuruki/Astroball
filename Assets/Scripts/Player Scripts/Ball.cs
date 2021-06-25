@@ -15,6 +15,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float maxDrag = 2f;
     [SerializeField] private float forceConstant = 400f;
     [SerializeField] private GameObject debugTextField;
+    [SerializeField] private Transform resetPosition;
 
     Rigidbody ballRigidbody;
     bool spacePressed, shiftPressed, changedDirection;
@@ -39,8 +40,6 @@ public class Ball : MonoBehaviour
     // Note - here is where you get all your inputs, check em, etc.
     void Update()
     {
-
-
         if (Input.GetKeyDown(KeyCode.Space))
         {
             spacePressed = true;
@@ -63,7 +62,6 @@ public class Ball : MonoBehaviour
     // Note - here is where you act upon any inputs you've read
     void FixedUpdate()
     {
-
         // "deathplane" is below y -110
         if (transform.position.y <= -110)
         {
@@ -116,7 +114,7 @@ public class Ball : MonoBehaviour
     // zeroing out their movement as well!
     private void ResetPlayer()
     {
-        transform.localPosition = new Vector3(0, 1, 0);
+        transform.position = resetPosition.position;
         ballRigidbody.velocity = new Vector3(0, 0, 0);
         PlayerStats.Health--;
     }
@@ -134,8 +132,6 @@ public class Ball : MonoBehaviour
         {
             changedDirection = true;
         }
-
-
 
         debugText.text = $"xInput: {xInput}";
 
@@ -208,7 +204,6 @@ public class Ball : MonoBehaviour
                     numTimesXChanged = 0;
                     changedDirection = false;
                 }
-
             }
         }
         else

@@ -44,7 +44,7 @@ public class InteractableNpcScript : MonoBehaviour
             }
             else
             {
-                UpdateUiTextboxPos();
+                ChatboxScriptHelper.UpdateUiTextboxPos(objToAttachTo, yPosCanvas, canvasRect, UiObjRt);
             }
             
             if (Input.GetKeyDown(KeyCode.E) && !menuOpen)
@@ -109,27 +109,5 @@ public class InteractableNpcScript : MonoBehaviour
             gameObjectToShow.SetActive(false);
         }
         menuOpen = false;
-    }
-
-    // wild bit of code that figures out where on the UI to display a textbox from an npc location in world
-    // shamelessly stolen from:
-    // https://forum.unity.com/threads/create-ui-health-markers-like-in-world-of-tanks.432935/
-    private void UpdateUiTextboxPos()
-    {
-        // Offset position above object box (in world space)
-        float offsetPosY = objToAttachTo.transform.position.y + yPosCanvas;
-
-        // Final position of marker in world space
-        Vector3 offsetPos = new Vector3(objToAttachTo.transform.position.x, offsetPosY, objToAttachTo.transform.position.z);
-
-        // Calculate *screen* position (note, not a canvas/recttransform position)
-        Vector2 canvasPos;
-        Vector2 screenPoint = Camera.main.WorldToScreenPoint(offsetPos);
-
-        // Convert screen position to Canvas / RectTransform space <- leave camera null if Screen Space Overlay
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, null, out canvasPos);
-
-        // Set position of ui element we want to show
-        UiObjRt.localPosition = canvasPos;
     }
 }
