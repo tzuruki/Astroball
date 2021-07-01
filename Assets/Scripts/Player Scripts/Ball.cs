@@ -106,6 +106,11 @@ public class Ball : MonoBehaviour
 
             Destroy(other.gameObject);
         }
+        if (other.gameObject.layer == 12)
+        {
+            PlayerStats.Health++;
+            Destroy(other.gameObject);
+        }
 
 
     }
@@ -136,7 +141,7 @@ public class Ball : MonoBehaviour
         debugText.text = $"xInput: {xInput}";
 
         // this will be the direction we move in relative to the input
-        Vector3 direction = new Vector3(xInput, 0f, zInput);
+        Vector3 direction = new Vector3(xInput, 0f, zInput).normalized;
 
         // We then transform this based on the current direction of the 
         // camera, so we move in that direction!

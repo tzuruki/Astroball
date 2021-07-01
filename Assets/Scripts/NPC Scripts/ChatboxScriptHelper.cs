@@ -7,7 +7,7 @@ public class ChatboxScriptHelper : MonoBehaviour
     public static void UpdateUiTextboxPos(GameObject objToAttachTo, float yPosCanvas, RectTransform canvasRect, RectTransform uiObjRt)
     {
         // Offset position above object box (in world space)
-        float offsetPosY = objToAttachTo.transform.position.y + yPosCanvas;
+        float offsetPosY = objToAttachTo.transform.position.y + 0;
 
         // Final position of marker in world space
         Vector3 offsetPos = new Vector3(objToAttachTo.transform.position.x, offsetPosY, objToAttachTo.transform.position.z);

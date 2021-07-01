@@ -9,6 +9,7 @@ public class PauseScreenScript : MonoBehaviour
     bool paused = false;
     [SerializeField] GameObject PauseScreen;
     [SerializeField] GameObject GameScreen;
+    [SerializeField] GameObject cameraToDisable;
     CursorLockMode lockState;
 
     void Update()
@@ -38,6 +39,7 @@ public class PauseScreenScript : MonoBehaviour
 
         // Set the timescale of the game to 0 so that nothing happens when paused!
         Time.timeScale = 0f;
+        cameraToDisable.SetActive(false);
         paused = true;
     }
 
@@ -49,6 +51,7 @@ public class PauseScreenScript : MonoBehaviour
 
         // Return to normal time
         Time.timeScale = 1f;
+        cameraToDisable.SetActive(true);
         paused = false;
     }
 
