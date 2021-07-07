@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static PlayerStats;
 
-public class Ball : MonoBehaviour
+public class BallScript : MonoBehaviour
 {
     // SerializeField will expose the field to the inspector without changing its visibility.
     [SerializeField] private float speed = 250;
@@ -32,7 +32,7 @@ public class Ball : MonoBehaviour
         distToGround = GetComponent<Collider>().bounds.extents.y;
         ballRigidbody.maxAngularVelocity = 25f;
         debugText = debugTextField.GetComponent<Text>();
-        PlayerStats.Health = 3;
+        PlayerStats.ResetPlayerStats();
         xInputPrev = 0;
     }
 
@@ -104,9 +104,16 @@ public class Ball : MonoBehaviour
 
             Destroy(other.gameObject);
         }
+
         if (other.gameObject.layer == 12)
         {
             PlayerStats.Health++;
+            Destroy(other.gameObject);
+        }
+
+        if(other.gameObject.layer == 13)
+        {
+            PlayerStats.HasCollectedShipPart = true;
             Destroy(other.gameObject);
         }
 

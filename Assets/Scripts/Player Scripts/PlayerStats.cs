@@ -10,10 +10,11 @@ public static class PlayerStats
         public int level { get; set; }
     }
 
-    private static int points, health;
-    private static List<DoorKey> keyList;
+    private static int points, health = 3;
+    private static List<DoorKey> keyList = new List<DoorKey>();
+    private static bool hasCollectedShipPart;
 
-    const int STARTING_HEALTH = 3;
+    public const int STARTING_HEALTH = 3;
 
     public static int Points
     {
@@ -36,6 +37,18 @@ public static class PlayerStats
         set
         {
             health = value;
+        }
+    }
+
+    public static bool HasCollectedShipPart
+    {
+        get
+        {
+            return hasCollectedShipPart;
+        }
+        set
+        {
+            hasCollectedShipPart = value;
         }
     }
 
@@ -80,6 +93,7 @@ public static class PlayerStats
         keyList.Clear();
         health = STARTING_HEALTH;
         points = 0;
+        hasCollectedShipPart = false;
     }
 
 }

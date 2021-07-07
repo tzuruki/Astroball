@@ -9,11 +9,6 @@ public class GameOverScreenScript : MonoBehaviour
     [SerializeField] GameObject PauseScreen;
     [SerializeField] GameObject GameOverScreen;
 
-    private void FixedUpdate()
-    {
-        
-    }
-
     public void ExitGame()
     {
         Debug.Log("Quitting");
