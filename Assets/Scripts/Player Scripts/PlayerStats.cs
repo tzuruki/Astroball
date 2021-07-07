@@ -10,44 +10,10 @@ public static class PlayerStats
         public int level { get; set; }
     }
 
-    private static int kills, deaths, assists, points, health;
+    private static int points, health;
     private static List<DoorKey> keyList;
 
-    public static int Kills
-    {
-        get
-        {
-            return kills;
-        }
-        set
-        {
-            kills = value;
-        }
-    }
-
-    public static int Deaths
-    {
-        get
-        {
-            return deaths;
-        }
-        set
-        {
-            deaths = value;
-        }
-    }
-
-    public static int Assists
-    {
-        get
-        {
-            return assists;
-        }
-        set
-        {
-            assists = value;
-        }
-    }
+    const int STARTING_HEALTH = 3;
 
     public static int Points
     {
@@ -107,6 +73,13 @@ public static class PlayerStats
             return false;
         }
         
+    }
+
+    public static void ResetPlayerStats()
+    {
+        keyList.Clear();
+        health = STARTING_HEALTH;
+        points = 0;
     }
 
 }

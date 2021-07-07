@@ -14,7 +14,7 @@ public class PauseScreenScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && PlayerStats.Health >= 0)
         {
             if (paused)
             {

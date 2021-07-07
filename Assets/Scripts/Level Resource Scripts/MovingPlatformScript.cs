@@ -7,8 +7,6 @@ public class MovingPlatformScript : MonoBehaviour
     [SerializeField] Collider platformCollider;
     [SerializeField] Vector3 destinationPos;
 
-    PlayerPresentColliderScript playerPresentScript;
-    bool playerOnPlatform = false;
     Vector3 initialPos, currentTargetPos;
     Rigidbody platformRb;
     float movementSpeed = 5f;
@@ -16,7 +14,6 @@ public class MovingPlatformScript : MonoBehaviour
 
     private void Start()
     {
-        playerPresentScript = platformCollider.GetComponent<PlayerPresentColliderScript>();
         initialPos = transform.localPosition;
         platformRb = GetComponent<Rigidbody>();
         currentTargetPos = destinationPos;
@@ -44,13 +41,13 @@ public class MovingPlatformScript : MonoBehaviour
 
     private bool shouldChangeDirecton()
     {
-        float diffX = transform.localPosition.x - currentTargetPos.x;
+        float diffX = transform.position.x - currentTargetPos.x;
         if (diffX > xLimit)
             return false;
-        float diffY = transform.localPosition.y - currentTargetPos.y;
+        float diffY = transform.position.y - currentTargetPos.y;
         if (diffY > yLimit)
             return false;
-        float diffZ = transform.localPosition.z - currentTargetPos.z;
+        float diffZ = transform.position.z - currentTargetPos.z;
         if (diffZ > zLimit)
             return false;
 

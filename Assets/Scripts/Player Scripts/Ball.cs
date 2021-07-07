@@ -54,14 +54,12 @@ public class Ball : MonoBehaviour
         {
             shiftPressed = false;
         }
-
-        Debug.Log(ballRigidbody.drag);
     }
 
     // FixedUpdate is called once every physics update (100x a s)
     // Note - here is where you act upon any inputs you've read
     void FixedUpdate()
-    {
+    { 
         // "deathplane" is below y -110
         if (transform.position.y <= -110)
         {
@@ -147,18 +145,17 @@ public class Ball : MonoBehaviour
         // camera, so we move in that direction!
         moveDirection = thirdPersonCam.TransformDirection(direction);
 
-        if (changedDirection)
+        /*if (changedDirection)
         {
             Vector3 xDirection = new Vector3(xInput, 0, 0);
             xMoveDirection = thirdPersonCam.TransformDirection(xDirection);
-        }
+        }*/
     }
 
     // Within here, apply any movement to the player that has been calculated.
     private void MovePlayer()
     {
         // basically mario jumping (small jump when small tap, big jump on long press)
-        // 
         if (ballRigidbody.velocity.y < 0)
         {
             // The Physics.Gravity.y part is negative. hence how we're applying downward motion here.
@@ -187,7 +184,7 @@ public class Ball : MonoBehaviour
                 spacePressed = false;
             }
 
-            //This reduces drag when the player adds input, and makes it stop faster. 
+            // This reduces drag when the player adds input, and makes it stop faster. 
             // However the problem is that because this is only really active on movement, it causes issues when jumping.
             // We need to deactivate the drag when doing a jump, and reactivate after. maybe only apply when grounded?
             ballRigidbody.drag = Mathf.Lerp(maxDrag, 0, ballRigidbody.velocity.magnitude);
@@ -197,7 +194,7 @@ public class Ball : MonoBehaviour
             float forceMultiplier = Mathf.Clamp01((speed - ballRigidbody.velocity.magnitude) / speed);
             // now we actually perform the push 
             ballRigidbody.AddForce(moveDirection * (forceMultiplier * Time.deltaTime * forceConstant));
-            if (changedDirection)
+            /*if (changedDirection)
             {
                 if (numTimesXChanged < 5)
                 {
@@ -209,7 +206,7 @@ public class Ball : MonoBehaviour
                     numTimesXChanged = 0;
                     changedDirection = false;
                 }
-            }
+            }*/
         }
         else
         {
@@ -225,5 +222,14 @@ public class Ball : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, distToGround + 0.1f);
+    }
+
+    private void IsPlayerDead()
+    {
+        if (PlayerStats.Health <= 0)
+        {
+            // do something like load a scene?
+
+        }
     }
 }

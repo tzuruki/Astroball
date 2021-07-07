@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static PlayerStats;
 
-public class RenderGUI : MonoBehaviour
+public class RenderPlayerStats : MonoBehaviour
 {
     public string scoreText;
     private Text textComponent;

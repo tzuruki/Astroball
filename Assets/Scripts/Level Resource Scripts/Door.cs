@@ -68,7 +68,6 @@ public class Door : MonoBehaviour
                     if (PlayerStats.RemoveKeyOfColourForLevel(colour, level))
                     {
                         doorShouldMove = true;
-                        Debug.Log("door should be told to move");
                         keyColourText.SetActive(false);
                     }
                 }
