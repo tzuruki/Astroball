@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/StartMenu.unity
     guid: 96a8884a5ba30c245b12c5d12a979dc8
   - enabled: 1
-    path: Assets/Scenes/FirstLevelScene.unity
+    path: Assets/Scenes/DebugLevelScene.unity
     guid: 854da1cb489248d46aa8347c6455122f
   - enabled: 1
     path: Assets/Scenes/Level1Greybox.unity

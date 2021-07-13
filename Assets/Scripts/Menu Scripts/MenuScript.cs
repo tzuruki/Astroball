@@ -7,7 +7,7 @@ public class MenuScript : MonoBehaviour
 {
     public void StartGame()
     {
-        SceneManager.LoadScene("FirstLevelScene");
+        SceneManager.LoadScene("DebugLevelScene");
     }
 
     public void StartLevel1()
