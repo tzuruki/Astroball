@@ -8,6 +8,7 @@ public class PauseScreenScript : MonoBehaviour
 
     bool paused = false;
     [SerializeField] GameObject PauseScreen;
+    [SerializeField] GameObject OptionsScreen;
     [SerializeField] GameObject GameScreen;
     [SerializeField] GameObject cameraToDisable;
     CursorLockMode lockState;
@@ -66,5 +67,17 @@ public class PauseScreenScript : MonoBehaviour
         SceneManager.LoadScene("StartMenu");
         Time.timeScale = 1f;
         paused = false;
+    }
+
+    public void OpenOptions()
+    {
+        PauseScreen.SetActive(false);
+        OptionsScreen.SetActive(true);
+    }
+
+    public void CloseOptions()
+    {
+        PauseScreen.SetActive(true);
+        OptionsScreen.SetActive(false);
     }
 }

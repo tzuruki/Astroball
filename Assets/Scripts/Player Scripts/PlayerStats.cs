@@ -11,8 +11,11 @@ public static class PlayerStats
     }
 
     private static int points, health = 3;
+    private static float mouseSens = 1;
     private static List<DoorKey> keyList = new List<DoorKey>();
     private static bool hasCollectedShipPart;
+
+    public static float TestFloatValue = 0;
 
     public const int STARTING_HEALTH = 3;
 
@@ -37,6 +40,18 @@ public static class PlayerStats
         set
         {
             health = value;
+        }
+    }
+
+    public static float MouseSensitivity
+    {
+        get
+        {
+            return mouseSens;
+        }
+        set
+        {
+            mouseSens = value;
         }
     }
 
@@ -94,6 +109,9 @@ public static class PlayerStats
         health = STARTING_HEALTH;
         points = 0;
         hasCollectedShipPart = false;
+        MouseSensitivity = 1;
     }
+
+
 
 }
