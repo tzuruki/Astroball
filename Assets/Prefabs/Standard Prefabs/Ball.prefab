@@ -110,13 +110,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd55bd3824577946913f4912dc10439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 350
+  speed: 500
   fallMultiplier: 3
   lowJumpMultiplier: 2
-  upJumpForce: 7
+  upJumpForce: 8.5
   brakeMultiplier: 2
   maxDrag: 5
-  forceConstant: 700
+  forceConstant: 800
   debugTextField: {fileID: 0}
   resetPosition: {fileID: 0}
   thirdPersonCam: {fileID: 0}
